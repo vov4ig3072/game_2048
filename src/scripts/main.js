@@ -8,8 +8,6 @@ const loseGameMessage = document.querySelector('.message-lose')
 const gameScore = document.querySelector('.game-score')
 const bestScore = document.querySelector('.game-best')
 
-let score = 0
-
 start.addEventListener("click", ()  => {
     
     start.textContent = "Restart"

@@ -4,6 +4,13 @@
   "description": "",
   "main": "server.js",
   "type": "module",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "url": "https://github.com/vov4ig3072/game_2048.git"
+  },
+
   "scripts": {
     "start": "node server",
     "dev": "nodemon server"
