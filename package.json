@@ -1,16 +1,17 @@
 {
   "name": "game_2048",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "server.js",
   "type": "module",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "registry": "https://npm.pkg.github.com",
+    "registry-url": "https://registry.npmjs.org/"
   },
   "repository": {
+    "type": "git",
     "url": "https://github.com/vov4ig3072/game_2048.git"
   },
-
   "scripts": {
     "start": "node server",
     "dev": "nodemon server"

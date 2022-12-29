@@ -32,31 +32,42 @@ start.addEventListener("click", ()  => {
 
 function keyDownEvent(event){
     getScore(-1)
+    
+
+    const first = []
+
+    td.forEach(elem => {
+        first.push({textContent: elem.textContent})
+    })
 
     switch(event.code){
         case "ArrowRight":
             pressArrowRight()
-            addRandomField()
         break
         case "ArrowLeft":
             pressArrowLeft()
-            addRandomField()
         break
         case "ArrowDown":
             pressArrowDown()
-            addRandomField()
         break
         case "ArrowUp":
             pressArrowUp()
-            addRandomField()
         break
     }
 
-    td.forEach(elementTd => {
-        if(elementTd.textContent === '2048'){
+    for(let i = 0; i < td.length; i++){
+        if(td[i].textContent === '2048'){
             winGameMessage.classList.remove('hidden')
         }
-    })
+        const isNull = td.filter(elem => elem.textContent === '').length === 0
+
+        if((first[i].textContent !== td[i].textContent) || isNull){
+            
+            addRandomField()
+            return
+        }
+    }
+
 }
 
 function pressArrowDown(){
@@ -127,7 +138,7 @@ function pressArrowRight(){
 
         for(let i = tdCurrenRow.length - 1; i > 0; i--){  
             if(tdCurrenRow[i - 1]){
-                fieldAddition(tdCurrenRow[i], tdCurrenRow[i-1])
+                fieldAddition( tdCurrenRow[i-1], tdCurrenRow[i])
             }
         }
 
@@ -136,13 +147,61 @@ function pressArrowRight(){
     })
 }
 
+function isHaveMove() {
+    
+    const elementsArray = []
+    tr.forEach(elem => elementsArray.push([...elem.querySelectorAll('td')]))
+
+    const coordinates = {
+        x:0,
+        y:0
+    }
+
+    function move(){
+        if(elementsArray[coordinates.y].length === coordinates.x){
+            coordinates.x = 0
+            coordinates.y++
+        }
+
+        if(elementsArray.length === coordinates.y){
+                return true
+        }
+
+        const current = elementsArray[coordinates.y][coordinates.x]
+        const nextElementX = elementsArray[coordinates.y ][coordinates.x + 1]
+        const nextElementY = elementsArray[coordinates.y + 1][coordinates.x]
+
+        if(elementsArray[coordinates.y + 1] && nextElementY){
+            if(current.textContent === nextElementY.textContent){
+                return false
+            }
+        }
+
+        if(nextElementX){
+            if(current.textContent === nextElementX.textContent){
+                return false
+            }
+        }
+
+        coordinates.x++
+
+        return move()
+    }
+
+    return move()
+}
+
 function addRandomField(){
     const random = Math.floor(Math.random() * td.length)
     const vacantTd = td.filter(elem => elem.textContent === '')
-
     if(vacantTd.length === 0){
-        loseGameMessage.classList.remove('hidden')
-        document.removeEventListener("keydown", keyDownEvent);
+        console.log(isHaveMove());
+        if(isHaveMove()){
+            loseGameMessage.classList.remove('hidden')
+            document.removeEventListener("keydown", keyDownEvent);  
+            return
+        }
+        
         return
     }else if(td[random].textContent){
         return addRandomField()
